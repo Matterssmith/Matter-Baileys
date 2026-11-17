@@ -96,7 +96,7 @@ async function main() {
       }
     });
 
-    // No messages.upsert listener, no sendMessage and no ping handler.
+    // This transport probe does not subscribe to message events.
     for (const signal of ['SIGINT', 'SIGTERM']) {
       process.once(signal, () => {
         try { socket.end(new Error('Operator stopped the test')); } catch { /* best effort */ }
