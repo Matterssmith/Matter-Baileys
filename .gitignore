@@ -1,0 +1,12 @@
+node_modules/
+.local-auth/
+**/auth_info_baileys/
+**/creds.json
+**/keys.json
+**/*.session
+**/*.sqlite
+**/*.db
+*.log
+.env
+.env.*
+!.env.example

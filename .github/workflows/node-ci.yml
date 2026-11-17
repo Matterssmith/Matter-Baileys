@@ -1,0 +1,29 @@
+name: WhatsApp-Matter beta contract tests
+on:
+  push:
+    branches: [matter-beta]
+  pull_request:
+    branches: [matter-beta, matter]
+
+permissions:
+  contents: read
+
+jobs:
+  node:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Install pinned platform dependencies (non-production)
+        run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Verify JavaScript syntax
+        run: npm run lint
+      - name: Verify guarded routing in offline tests
+        run: npm test
+      - name: Smoke CLI help (no connection)
+        run: node src/runner.mjs --help
