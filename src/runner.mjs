@@ -9,6 +9,9 @@ import { mkdir, open, unlink } from 'node:fs/promises';
 import { resolve, join, relative, isAbsolute, dirname, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { pairingCodeValid, shouldRequestPairingCode, validInternationalPhone } from './guard.mjs';
+import {
+  bridgeConfiguration, ownerControlPayload, signControlFrame, deliverControlFrame,
+} from './bridge.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
@@ -22,7 +25,7 @@ function configuration() {
   if (phone && !validInternationalPhone(phone)) {
     throw new Error('WA_PAIRING_PHONE must contain 8-15 international digits');
   }
-  return { authDir, phone };
+  return { authDir, phone, bridge: bridgeConfiguration() };
 }
 
 async function main() {
@@ -96,14 +99,31 @@ async function main() {
       }
     });
 
-    // This transport probe does not subscribe to message events.
+
+    if (config.bridge) {
+      // No outbound WhatsApp messages; the only action is an authenticated,
+      // owner-only local control frame to Base-Matter.
+      socket.ev.on('messages.upsert', ({ messages, type }) => {
+        if (!['notify', 'append'].includes(type) || !Array.isArray(messages)) return;
+        for (const message of messages) {
+          const payload = ownerControlPayload(message, config.bridge);
+          if (!payload) continue;
+          const frame = signControlFrame(payload, config.bridge.key);
+          void deliverControlFrame(frame, config.bridge)
+            .then((outcome) => process.stdout.write('Base-Matter global control: ' + outcome + '\n'))
+            .catch(() => process.stderr.write('Base-Matter control bridge refused the event.\n'));
+        }
+      });
+    }
+
     for (const signal of ['SIGINT', 'SIGTERM']) {
       process.once(signal, () => {
         try { socket.end(new Error('Operator stopped the test')); } catch { /* best effort */ }
         void release();
       });
     }
-    process.stdout.write('Pairing-code-only test. No QR and no automatic replies.\n');
+    process.stdout.write('Pairing-code-only probe. No QR or automatic WhatsApp replies.\n');
+    if (config.bridge) process.stdout.write('Owner-only Base-Matter control bridge enabled.\n');
   } catch (error) {
     await release();
     throw error;

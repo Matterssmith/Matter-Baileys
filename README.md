@@ -11,7 +11,9 @@ desarrollar o integrar los componentes en Bot-Matter.
   el transporte está listo, incluso al pedir código. Nunca se muestra ni
   se utiliza como método de vinculación.
 - El \`#ping\` histórico fue una prueba y se retiró de esta beta.
-  No hay respuesta automática, \`messages.upsert\` ni \`sendMessage\`.
+  No hay respuesta automática a WhatsApp ni \`sendMessage\`.
+  Con el puente autenticado explícitamente configurado, solo se admiten
+  eventos privados propios con \`=/>\` hacia Base-Matter.
 - El control global del ecosistema usa \`=/>\` dentro de Base-Matter,
   independiente del futuro bot. Este prototipo no administra grupos ni roles.
 - La sesión se mantiene solo en \`.local-auth/\`, carpeta ignorada por Git.
@@ -51,3 +53,23 @@ Base-Matter, commit \`3c36d97bb\`. Debe revisarse antes de escoger adaptador.
 
 Créditos:
 Hecho por Lournyx Matterssmith [Lou-Nyx].
+
+## Puente opcional de control global a Base-Matter
+
+La sonda sigue siendo de solo lectura respecto a WhatsApp: jamás llama
+a \`sendMessage\`. Solo si se configuran **todas** las variables siguientes,
+emitirá controles \`=/>\` del propietario en un chat privado, mediante HMAC:
+\`WA_BRIDGE_ADDR=127.0.0.1:39819\`,
+\`WA_BRIDGE_KEY_HEX\` (clave privada de 32 bytes hex),
+\`WA_BRIDGE_SOCKET_ID\`, \`WA_BRIDGE_OWNER_ID\`,
+\`WA_BRIDGE_OWNER_JID\`. El secreto debe generarse en el sistema
+local y protegerse fuera del repositorio y de los logs.
+
+El servidor Rust que consume el protocolo aún requiere integración con el
+runtime real. La presencia de estas variables **no demuestra** que WhatsApp
+esté vinculado ni que exista un listener. No vincular varios sockets al
+mismo secreto. El contrato y los límites están documentados en
+[bridge](docs/BRIDGE_V1.md).
+
+Los comandos normales, incluido el \`#ping\` histórico, no se despachan.
+No se aceptan grupos ni mensajes de otros usuarios.

@@ -10,7 +10,7 @@
   },
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "lint": "node --check src/guard.mjs && node --check src/runner.mjs && node --check test/guard.test.mjs && node --check test/runtime-import.test.mjs",
+    "lint": "node --check src/guard.mjs && node --check src/runner.mjs && node --check src/bridge.mjs && node --check test/guard.test.mjs && node --check test/runtime-import.test.mjs && node --check test/bridge.test.mjs",
     "smoke": "node src/runner.mjs"
   },
   "dependencies": {
