@@ -1,21 +1,20 @@
 {
-  "name": "whatsapp-matter-smoke",
-  "version": "0.1.0-beta.1",
+  "name": "whatsapp-matter-code-pairing-probe",
+  "version": "0.1.0-beta.2",
   "private": true,
   "type": "module",
-  "description": "Guarded unofficial WhatsApp smoke provider, no Matter-Bot runtime",
+  "description": "Read-only code-pairing probe; no bot commands or QR",
   "license": "MIT",
   "engines": {
     "node": ">=22"
   },
   "scripts": {
     "test": "node --test test/*.test.mjs",
-    "lint": "node --check src/guard.mjs && node --check src/runner.mjs && node --check test/guard.test.mjs",
+    "lint": "node --check src/guard.mjs && node --check src/runner.mjs && node --check test/guard.test.mjs && node --check test/runtime-import.test.mjs",
     "smoke": "node src/runner.mjs"
   },
   "dependencies": {
     "@whiskeysockets/baileys": "7.0.0-rc14",
-    "pino": "9.6.0",
-    "qrcode-terminal": "0.12.0"
+    "pino": "9.6.0"
   }
 }
