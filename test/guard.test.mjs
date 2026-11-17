@@ -31,9 +31,11 @@ test('provider readiness is checked only once on unregistered sessions', () => {
   assert.equal(shouldRequestPairingCode({}, false, false), false);
 });
 
-test('runner contains no rendered QR, outbound message send or ping handler', () => {
+test('runner has no QR or WhatsApp outbound send and forwards only signed owner controls', () => {
   const source = readFileSync(new URL('../src/runner.mjs', import.meta.url), 'utf8');
   assert.doesNotMatch(source, /qrcode-terminal|qrTerm|\.sendMessage\(/);
-  assert.doesNotMatch(source, /messages\.upsert|classifyPrivateTestMessage/);
+  assert.doesNotMatch(source, /classifyPrivateTestMessage|#ping/);
+  assert.match(source, /messages\.upsert/);
+  assert.match(source, /ownerControlPayload\(message, config\.bridge\)/);
   assert.match(source, /requestPairingCode\(config\.phone\)/);
 });
