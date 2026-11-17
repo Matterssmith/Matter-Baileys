@@ -42,3 +42,8 @@ Solo después de esos puntos debe considerarse la promoción estable.
 
 Créditos:
 Hecho por Lournyx Matterssmith [Lou-Nyx].
+
+La suite `test/runtime-import.test.mjs` confirma que la versión fijada
+de Baileys exporta su fábrica WebSocket y el cargador de estado. No abre
+conexión ni guarda credenciales. La validación de carpetas de sesión funciona
+tanto en Unix como en Windows mediante `path.relative`.

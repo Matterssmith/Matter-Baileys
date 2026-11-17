@@ -6,7 +6,7 @@
  */
 
 import { mkdir, open, unlink } from 'node:fs/promises';
-import { resolve, join } from 'node:path';
+import { resolve, join, relative, isAbsolute } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dirname } from 'node:path';
 import { classifyPrivateTestMessage, makeBoundedReplay, parseAllowlist } from './guard.mjs';
@@ -15,7 +15,8 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 
 function configuration() {
   const authDir = resolve(process.env.WA_AUTH_DIR ?? join(root, '.local-auth'));
-  if (authDir === root || !authDir.startsWith(root + '/')) {
+  const location = relative(root, authDir);
+  if (!location || location === '..' || location.startsWith('..' + (process.platform === 'win32' ? '\\' : '/')) || isAbsolute(location)) {
     throw new Error('WA_AUTH_DIR must be a private directory under this checkout');
   }
   const pairingPhone = process.env.WA_PAIRING_PHONE?.trim() ?? '';

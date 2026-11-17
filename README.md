@@ -68,8 +68,8 @@ dispositivo con \`fromMe=true\`.
 - Antes de producción se necesita un almacén de claves Signal autenticado,
   aislamiento por socket, revocación, control de generación, auditoría,
   consentimiento, cifrado de configuración y pruebas completas de grupos.
-- GitHub Actions ejecuta pruebas unitarias sin credenciales y verifica que el
-  proyecto instala dependencias. No realiza emparejamiento real.
+- GitHub Actions ejecuta pruebas unitarias sin credenciales, verifica que el
+  proyecto instala dependencias y comprueba los puntos de entrada de Baileys. No realiza emparejamiento real.
 - Los límites y el contrato previsto con Rust están en
   [docs/ADAPTER_CONTRACT.md](docs/ADAPTER_CONTRACT.md).
 
