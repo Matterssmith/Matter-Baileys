@@ -1,0 +1,10 @@
+# Continuidad — archivo Matter
+
+- Fecha 2026-11-19; SHA previo 57226de377c1dfeecd9de49415fb593c8ac01936; rama matter.
+- Se crearon requisitos MAT-ARCH-013,014,017; MAT-COM-003,017 y apuntadores README/AGENTS; no se cambió código de proveedor ni runtime.
+- Fuente: Proyecto-Matter.zip, no publicado por contener información privada.
+- No hay tests funcionales de este documento; estado idea.
+- Siguiente: revisión responsable, pruebas seguras y aprobación por fase. Bot-Matter bloqueado.
+
+Créditos:
+Hecho por Lournyx Matterssmith [Lou-Nyx].
