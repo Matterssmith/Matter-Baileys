@@ -1,3 +1,9 @@
+## 2026-11-19 — Enlace corregido
+
+- SHA anterior: 8dd6044ec27630d6d60de7747dbda99a45788db8.
+- Corregido únicamente el enlace relativo Markdown del índice de ideas en README; sin cambios de funcionalidad.
+- README revisado y validado; CI de código no aplicable.
+
 # Continuidad — archivo Matter
 
 - Fecha 2026-11-19; SHA previo 57226de377c1dfeecd9de49415fb593c8ac01936; rama matter.
