@@ -5,6 +5,7 @@
  * Hecho por Lournyx Matterssmith [Lou-Nyx].
  */
 pub mod engine;
+pub mod features;
 
 use matter_whatsapp_contracts::{
     describe_provider, normalize_untrusted, NormalizeError, NormalizedTextEvent,
