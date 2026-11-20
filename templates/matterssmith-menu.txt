@@ -1,0 +1,26 @@
+*꒦꒷✰꒷꒦︶꒦꒷✧꒷꒦︶꒦꒷✰꒷꒦*
+꧁✪⃢.✪ 𝐌𝐚𝐭𝐭𝐞𝐫𝐬𝐬𝐦𝐢𝐭𝐡 ۞₪»̶⟩
+
+*Base-Matter* · ✦
+
+╭─💠 𝗖𝗼𝗻𝘁𝗿𝗼𝗹
+💬 𝗖𝗼𝗺𝗮𝗻𝗱𝗼𝘀 𝗱𝗲 𝗰𝗼𝗻𝘁𝗿𝗼𝗹
+
+│·♪·╠[ ◉ =/>status — Estado de este chat
+│·♪·╠[ ⓘ =/>status --mod — Configuración del socket [propietario]
+│·♪·╠[ ⊙ =/>status --global — Predeterminado general [consulta]
+│·♪·╠[ ✦ =/>bot on/off — Activar o apagar este chat [propietario]
+│·♪·╠[ ♧ =/>bot inherit — Restaurar herencia [propietario]
+│·♪·╠[ ⚙︎ =/>bot --mod on/off — Predeterminado del socket [propietario]
+│·♪·╠[ ♧ =/>bot group on/off — Grupos [propietario]
+│·♪·╠[ ♙ =/>bot private on/off — Privados externos [propietario]
+│·♪·╠[ ☷ =/>bot channel on/off — Canales [requiere identidad verificada]
+│·♪·╠[ ♧ =/>bot community on/off — Avisos comunitarios [requiere metadatos]
+│·♪·╠[ ♛ =/>set — Configuración [propietario]
+│·♪·╠[ ◈ =/>roles — Vault-Matter [solo lectura]
+│·♪·╚[ ⴵ =/>audit — Auditoría [propietario]
+
+💠 =/>status funciona incluso cuando el bot está apagado.
+╰───────────⟨ 🌀
+
+Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
