@@ -1,0 +1,89 @@
+name: WhatsApp-Matter Rust parity and upstream monitoring
+
+on:
+  push:
+    branches: [feat/whatsmeow-rust-engine]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * *'
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  verify:
+    if: github.event_name != 'schedule'
+    name: Rust WhatsMeow isolation and drift contract
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - name: Verify Rustfmt
+        run: cargo fmt --all -- --check
+      - name: Test Rust adapter and strict ingress
+        run: cargo test -p matter-whatsapp-whatsmeow-adapter --all-targets
+      - name: Strict Clippy
+        run: cargo clippy -p matter-whatsapp-whatsmeow-adapter --all-targets -- -D warnings
+      - name: Validate observed upstream baselines offline
+        run: python3 scripts/check_whatsapp_upstream.py --offline
+
+  monitor:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    name: Compare upstream official HEADs, manual review only
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Read upstream SHAs safely
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python3 scripts/check_whatsapp_upstream.py > /tmp/matter-whatsapp-upstream.json
+      - name: Write report and create review issues
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          ACTION_EVENT: ${{ github.event_name }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+          data = json.loads(Path("/tmp/matter-whatsapp-upstream.json").read_text())
+          with open(os.environ["GITHUB_STEP_SUMMARY"], "a", encoding="utf-8") as summary:
+              summary.write("## Official upstream revision changes\n\n")
+              for row in data["results"]:
+                  summary.write("- {}: {} ({})\n".format(
+                      row["name"], "changed" if row["changed"] else "unchanged", row["latest"][:12]))
+          if os.environ.get("ACTION_EVENT") == "schedule":
+              for row in data["results"]:
+                  if not row["changed"]:
+                      continue
+                  title = "Upstream changed: {} - manual Rust parity review".format(row["name"])
+                  found = subprocess.run(
+                      ["gh", "issue", "list", "--state", "open", "--search", title,
+                       "--json", "title", "--limit", "50"],
+                      check=True, text=True, capture_output=True)
+                  if any(x["title"] == title for x in json.loads(found.stdout)):
+                      continue
+                  body = "\n".join([
+                      "Official source: " + row["repository"],
+                      "Previously observed: " + row["baseline"],
+                      "Latest: " + row["latest"],
+                      "Compare: " + row["compare_url"],
+                      "Review protocol, app state, Signal keys, pairing, NativeFlow,",
+                      "groups, calls, security, license, CI and isolated E2E.",
+                      "Never automatically adopt upstream code or share sessions.",
+                      "Update baseline SHA only after review and test evidence.",
+                  ])
+                  subprocess.run(
+                      ["gh", "issue", "create", "--title", title, "--body", body],
+                      check=True)
+          PY
