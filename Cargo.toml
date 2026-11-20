@@ -1,0 +1,15 @@
+# WhatsApp-Matter — Rust workspace
+# Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+[workspace]
+resolver = "2"
+members = [
+    "crates/whatsapp-contracts",
+    "providers/whatsapp-rust",
+    "providers/baileys",
+    "providers/whatsmeow",
+]
+default-members = [
+    "crates/whatsapp-contracts",
+    "providers/baileys",
+    "providers/whatsmeow",
+]

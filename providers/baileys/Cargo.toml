@@ -1,0 +1,9 @@
+[package]
+name = "matter-whatsapp-baileys-adapter"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+description = "Rust compatibility normalization for future Baileys migration"
+
+[dependencies]
+matter-whatsapp-contracts = { path = "../../crates/whatsapp-contracts" }
