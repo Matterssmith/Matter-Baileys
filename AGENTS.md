@@ -1,3 +1,9 @@
+## 2026-11-19 — Reparación de CI del proveedor extraído
+
+- En GitHub Actions (run 44647572370) fallaban rustfmt de `crates/whatsapp-contracts/src/lib.rs` y dos tests de Rich HTML en Windows por los finales de línea CRLF incluidos desde `templates/matterssmith-menu.txt`. Se normaliza CRLF a LF **solo para la vista previa offline**, manteniendo rechazo de otros caracteres de control.
+- No se cambian sesiones, comunicación real ni pairing; Baileys/whatsmeow siguen como adaptadores Rust de normalización, NO transportes completos.
+- Confirmar tests Linux/Windows tras el commit y conservar proveedor en Base hasta completar corte controlado de origen. Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 ## 2026-11-19 — Migración inicial Rust y contratos Go/TypeScript/JavaScript
 
 - Copia completa de proveedor Rust desde Base-Matter alpha (fuentes, tests, plantillas y audio); Base sigue ejecutando su proveedor original.

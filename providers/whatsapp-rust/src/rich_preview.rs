@@ -15,6 +15,10 @@ const MAX_HTML_BYTES: usize = 16 * 1024;
 ///
 /// This is a browser preview, NOT an HTML message sent to WhatsApp.
 pub fn menu_html_preview(menu: &str) -> Result<String> {
+    // Git checkouts on Windows may change checked-in template LF into CRLF.
+    // Normalize paired line endings ONLY for the offline HTML preview.
+    let normalized = menu.replace("\r\n", "\n");
+    let menu = normalized.as_str();
     if menu.is_empty()
         || menu.len() > MAX_TEXT_BYTES
         || menu.chars().any(|c| c.is_control() && c != '\n')

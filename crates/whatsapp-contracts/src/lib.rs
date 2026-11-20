@@ -185,7 +185,12 @@ mod tests {
     #[test]
     fn no_privileged_operation_or_unexpected_fields() {
         assert!(!handle_json(r#"{"version":1,"operation":"send","provider":"baileys"}"#).ok);
-        assert!(!handle_json(r#"{"version":1,"operation":"describe","provider":"baileys","token":"secret"}"#).ok);
+        assert!(
+            !handle_json(
+                r#"{"version":1,"operation":"describe","provider":"baileys","token":"secret"}"#
+            )
+            .ok
+        );
         assert!(!handle_json(r#"{"version":2,"operation":"describe","provider":"baileys"}"#).ok);
     }
 
