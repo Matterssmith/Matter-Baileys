@@ -1,3 +1,10 @@
+## 2026-11-19 — Política obligatoria Vault-D019: protección equivalente a credenciales
+
+- **Regla permanente del ecosistema:** TODOS los activos administrados por Vault — roles, permisos, decisiones, credenciales, políticas, metadatos, evidencia, auditoría, caché, respaldos y estados — deben cifrarse/autenticarse en reposo y transmitirse por canales cifrados y autenticados. Descifrado temporal sólo en memoria confiable; claves fuera de Git, nunca textos sensibles en logs, respuestas públicas ni archivos temporales.
+- Cada proveedor/adaptador puede manejar transporte y eventos, pero no recibir ni persistir en claro claves, grants, identidad Vault, sesión ajena ni credenciales compartidas. Vincular servicio Vault sólo por canal autenticado y cifrado; cifrar cualquier estado gestionado por Vault, incluyendo audit/replay/metadata relevante, y denegar si falla el canal. El proveedor no interpreta un JSON, alias o prefijo como permiso. Cifrado en tránsito NO sustituye resguardo de sesión ni cifrado Vault. No cambiar las sesiones actuales.
+- La norma principal se mantiene en la política privada VAULT-D019. Esta actualización es documental y no acredita gateway Vault, ejecución privada o migración de sesiones. No conceder permisos sin verificación y no afirmar pruebas funcionales.
+- Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 # WhatsApp-Matter — Migración de proveedores por etapas
 
 Estado: copia de fuentes y contrato inicial, NO migración final ni
