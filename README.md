@@ -1,3 +1,10 @@
+## 2026-11-20 — Matter-Rust universal (corrección: no solo WhatsApp)
+
+- El núcleo compartido para WhatsApp, Telegram, Discord y, después, Social-Matter vive provisionalmente en `Base-Matter/crates/matter-rust`, rama `feat/matter-rust-multiplatform`. WhatsApp-Matter sigue siendo responsable únicamente de su transporte y de la compatibilidad WhatsMeow/Baileys.
+- `providers/matter-rust` es un **ejecutable experimental WhatsApp**, NO toda la implementación multiplataforma. No se permite migrar sesiones de Base ni declararlo motor universal listo. Contrato en `docs/MATTER_RUST_UNIVERSAL.md`.
+- Los repos Telegram-Matter, Discord-Matter y Social-Matter registran contratos de integración en ramas separadas. No compartir tokens, ID, roles ni sockets.
+- Mantener CI, README y continuidad sincronizados; Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 ## 2026-11-19 — Separación Vault y proveedores WhatsApp
 
 - La clave maestra y datos privados quedan exclusivamente bajo custodia del servicio Vault, no en proveedores ni bindings Go/JS/TS ni Bot-Matter. El transporte sólo entrega eventos verificables, sin otorgar autoridad por texto o prefijo.
