@@ -11,8 +11,7 @@ use matter_whatsapp_contracts::{NormalizeError, NormalizedTextEvent, UntrustedTe
 use serde::{Deserialize, Serialize};
 use std::{
     collections::{HashSet, VecDeque},
-    fmt,
-    fs,
+    fmt, fs,
     path::{Component, Path, PathBuf},
 };
 
@@ -64,15 +63,19 @@ pub enum EngineError {
 
 impl fmt::Display for EngineError {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "{}", match self {
-            Self::InvalidEvent => "invalid_event",
-            Self::EventTooLarge => "event_too_large",
-            Self::InvalidSocket => "invalid_socket",
-            Self::UnsafeStorage => "unsafe_storage",
-            Self::Replay => "replay",
-            Self::UntrustedOrigin => "untrusted_origin",
-            Self::FeatureUnavailable => "feature_unavailable",
-        })
+        write!(
+            formatter,
+            "{}",
+            match self {
+                Self::InvalidEvent => "invalid_event",
+                Self::EventTooLarge => "event_too_large",
+                Self::InvalidSocket => "invalid_socket",
+                Self::UnsafeStorage => "unsafe_storage",
+                Self::Replay => "replay",
+                Self::UntrustedOrigin => "untrusted_origin",
+                Self::FeatureUnavailable => "feature_unavailable",
+            }
+        )
     }
 }
 
@@ -155,7 +158,10 @@ impl ReadOnlyReplayFilter {
         if event.provider != "whatsmeow" {
             return Err(EngineError::UntrustedOrigin);
         }
-        let key = format!("{}\0{}\0{}", event.chat_id, event.sender_id, event.message_id);
+        let key = format!(
+            "{}\0{}\0{}",
+            event.chat_id, event.sender_id, event.message_id
+        );
         if !self.seen.insert(key.clone()) {
             return Err(EngineError::Replay);
         }
@@ -228,7 +234,9 @@ pub fn isolated_session_root(root: &Path, socket_id: &str) -> Result<PathBuf, En
 /// Pairing/login and mutating messaging are deliberately NOT callable via
 /// the public descriptive bridge. Only trusted host-side setup may enable
 /// an isolated experimental engine after authorization and live tests.
-pub fn require_mutating_authority(_untrusted_event: &NormalizedTextEvent) -> Result<(), EngineError> {
+pub fn require_mutating_authority(
+    _untrusted_event: &NormalizedTextEvent,
+) -> Result<(), EngineError> {
     Err(EngineError::UntrustedOrigin)
 }
 
@@ -246,7 +254,8 @@ mod tests {
             "message_id": "ABC:123",
             "text": "=/>set role owner --global",
             "kind": "original"
-        }).to_string()
+        })
+        .to_string()
     }
 
     #[test]
@@ -258,13 +267,29 @@ mod tests {
 
     #[test]
     fn rejects_socket_spoofing_and_extra_authority_fields() {
-        assert_eq!(decode_untrusted_event(&sample(), "wa-alpha").unwrap_err(), EngineError::InvalidSocket);
-        assert_eq!(decode_untrusted_event(&sample(), "wa-whatsmeow-other").unwrap_err(), EngineError::InvalidEvent);
-        let forged = sample().replace("\"kind\":\"original\"", "\"kind\":\"original\",\"owner\":true");
-        assert_eq!(decode_untrusted_event(&forged, "wa-whatsmeow-test").unwrap_err(), EngineError::InvalidEvent);
+        assert_eq!(
+            decode_untrusted_event(&sample(), "wa-alpha").unwrap_err(),
+            EngineError::InvalidSocket
+        );
+        assert_eq!(
+            decode_untrusted_event(&sample(), "wa-whatsmeow-other").unwrap_err(),
+            EngineError::InvalidEvent
+        );
+        let forged = sample().replace(
+            "\"kind\":\"original\"",
+            "\"kind\":\"original\",\"owner\":true",
+        );
+        assert_eq!(
+            decode_untrusted_event(&forged, "wa-whatsmeow-test").unwrap_err(),
+            EngineError::InvalidEvent
+        );
         let edited = sample().replace("\"kind\":\"original\"", "\"kind\":\"edited\"");
         assert!(decode_untrusted_event(&edited, "wa-whatsmeow-test").is_ok());
-        assert_eq!(decode_untrusted_event(&"A".repeat(MAX_EVENT_BYTES + 1), "wa-whatsmeow-test").unwrap_err(), EngineError::EventTooLarge);
+        assert_eq!(
+            decode_untrusted_event(&"A".repeat(MAX_EVENT_BYTES + 1), "wa-whatsmeow-test")
+                .unwrap_err(),
+            EngineError::EventTooLarge
+        );
     }
 
     #[test]
@@ -279,8 +304,15 @@ mod tests {
 
     #[test]
     fn isolated_root_rejects_original_socket() {
-        assert!(isolated_session_root(Path::new("/tmp/base-matter/whatsmeow"), "wa-alpha").is_err());
-        assert!(isolated_session_root(Path::new("/tmp/base-matter/whatsmeow"), "wa-test-1").is_err());
-        assert!(isolated_session_root(Path::new("/tmp/base-matter/whatsapp-rust"), "wa-meow-test").is_err());
+        assert!(
+            isolated_session_root(Path::new("/tmp/base-matter/whatsmeow"), "wa-alpha").is_err()
+        );
+        assert!(
+            isolated_session_root(Path::new("/tmp/base-matter/whatsmeow"), "wa-test-1").is_err()
+        );
+        assert!(
+            isolated_session_root(Path::new("/tmp/base-matter/whatsapp-rust"), "wa-meow-test")
+                .is_err()
+        );
     }
 }
