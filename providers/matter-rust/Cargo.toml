@@ -1,0 +1,33 @@
+[package]
+name = "matter-rust"
+version = "0.1.0"
+edition = "2021"
+publish = false
+license = "MIT"
+description = "Matter-Rust: one native Rust WhatsApp engine with WhatsMeow and Baileys compatibility"
+
+[[bin]]
+name = "matter-rust"
+path = "src/main.rs"
+
+[dependencies]
+matter-whatsapp-contracts = { path = "../../crates/whatsapp-contracts" }
+matter-whatsapp-baileys-adapter = { path = "../baileys" }
+matter-whatsapp-whatsmeow-adapter = { path = "../whatsmeow" }
+whatsapp-matter-rust-provider = { path = "../whatsapp-rust" }
+whatsapp-rust = { version = "=0.7.0", default-features = false, features = ["tokio-runtime", "tokio-native", "tokio-transport", "ureq-client", "sqlite-storage"] }
+tokio = { version = "1.48", features = ["macros", "rt-multi-thread", "net", "io-util"] }
+anyhow = "1.0"
+hex = "0.4"
+zeroize = "1.8"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+hmac = "0.12"
+sha2 = "0.10"
+chacha20poly1305 = "0.10"
+getrandom = "0.3"
+buffa = "=0.9.1"
+base64 = "0.22"
+
+# Créditos:
+# Hecho por Lournyx Matterssmith [Lou-Nyx].
