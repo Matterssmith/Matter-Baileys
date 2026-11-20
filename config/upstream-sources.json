@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "observed_on": "2026-11-20",
+  "note": "These SHAs are observed upstream HEADs, NOT security-approved or automatically adopted dependencies. Update only after review and tests.",
+  "sources": [
+    {
+      "name": "whatsmeow",
+      "repository": "tulir/whatsmeow",
+      "branch": "main",
+      "observed_sha": "19d61352436f3aeb21ad2cf93c2e3599ac409415",
+      "license": "MPL-2.0"
+    },
+    {
+      "name": "baileys",
+      "repository": "WhiskeySockets/Baileys",
+      "branch": "master",
+      "observed_sha": "bb0a87e0326ca8f882fe716c7ee42da362f73fc0",
+      "license": "review upstream before copying code"
+    },
+    {
+      "name": "whatsapp-rust",
+      "repository": "oxidezap/whatsapp-rust",
+      "branch": "main",
+      "observed_sha": "d6068edca6e4d9f935d6a919a6f0cd7be8dad777",
+      "license": "MIT"
+    }
+  ]
+}
