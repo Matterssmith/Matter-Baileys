@@ -1,3 +1,9 @@
+## 2026-11-19 — Separación Vault y proveedores WhatsApp
+
+- La clave maestra y datos privados quedan exclusivamente bajo custodia del servicio Vault, no en proveedores ni bindings Go/JS/TS ni Bot-Matter. El transporte sólo entrega eventos verificables, sin otorgar autoridad por texto o prefijo.
+- Vault ya tiene un núcleo de cifrado local probado en Rust; gateway autenticado remoto aún pendiente. Ningún proveedor puede descifrar Vault ni reutilizar identidades de otro socket.
+- Continuidad: docs/VAULT_BOUNDARY.md. No se traslada sesión ni se declara port real de Baileys/whatsmeow, ni se toca código ejecutable. Revisado README; Bot-Matter bloqueado. Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 ## 2026-11-19 — Política obligatoria Vault-D019: protección equivalente a credenciales
 
 - **Regla permanente del ecosistema:** TODOS los activos administrados por Vault — roles, permisos, decisiones, credenciales, políticas, metadatos, evidencia, auditoría, caché, respaldos y estados — deben cifrarse/autenticarse en reposo y transmitirse por canales cifrados y autenticados. Descifrado temporal sólo en memoria confiable; claves fuera de Git, nunca textos sensibles en logs, respuestas públicas ni archivos temporales.
