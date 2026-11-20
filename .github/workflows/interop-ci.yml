@@ -1,0 +1,59 @@
+name: WhatsApp-Matter Rust and interoperability
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+
+jobs:
+  contracts:
+    name: Rust contracts (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Rustfmt
+        run: cargo fmt --all -- --check
+      - name: Contract tests
+        run: cargo test -p matter-whatsapp-contracts -p matter-whatsapp-baileys-adapter -p matter-whatsapp-whatsmeow-adapter --all-targets
+
+  native-provider:
+    name: Native Rust provider (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+    timeout-minutes: 55
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - name: Offline native provider tests
+        run: cargo test -p whatsapp-matter-rust-provider --all-targets
+
+  bindings:
+    name: Go JS TS
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.22'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Go tests
+        working-directory: bindings/go
+        run: go test ./...
+      - name: JavaScript tests
+        run: node --test bindings/javascript/index.test.mjs
+      - name: TypeScript typecheck
+        run: npm exec --yes --package=typescript@5.9.3 -- tsc --project bindings/typescript/tsconfig.json

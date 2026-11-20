@@ -1,3 +1,12 @@
+## 2026-11-19 — Migración inicial Rust y contratos Go/TypeScript/JavaScript
+
+- Copia completa de proveedor Rust desde Base-Matter alpha (fuentes, tests, plantillas y audio); Base sigue ejecutando su proveedor original.
+- Workspace Rust con compatibilidad Baileys/whatsmeow de normalización únicamente. NO transportes portados ni sesiones nuevas.
+- Contratos y bindings JSON v1 describe solo lectura para Rust, Go, TS y JS, con pruebas automáticas y reglas de CI.
+- Guiar la continuación mediante docs/PROVIDER_MIGRATION.md y docs/WIRE_PROTOCOL.md. No hay Vault operativo ni capacidad de mutación externa.
+- CI y pairing reales pendientes al escribir este commit. Mantener Bot-Matter bloqueado; README revisado.
+- Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 # Adaptador WhatsApp y pruebas de interfaz del archivo
 
 **Fecha:** 2026-11-19. **Estado:** especificación a validar, sin código activo. **Requisitos:** MAT-ARCH-013,014,017; MAT-COM-003,017. [Fuente clasificada](https://github.com/Matterssmith/Docs-Matter/blob/matter/docs/ARCHIVE_IDEAS_SOURCE_INDEX.md).

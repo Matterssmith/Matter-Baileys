@@ -1,9 +1,53 @@
-# ꧁✪⃢.✪ 𝐌𝖆𝖙𝖙𝖊𝖗𝖘𝖘𝖒𝖎𝖙𝖍۞₪»̶ ༄☾︎𝐌𝐒☽︎༄
-## Requisitos del archivo Matter
+# WhatsApp-Matter — Rust nativo con interoperabilidad Go, TypeScript y JavaScript
 
-Adaptador WhatsApp y pruebas de interfaz del archivo; MAT-ARCH-013,014,017; MAT-COM-003,017. [Instrucciones](docs/PROJECT_IDEA_REQUIREMENTS.md) · [Inventario](https://github.com/Matterssmith/Docs-Matter/blob/matter/docs/ARCHIVE_IDEAS_SOURCE_INDEX.md).
+**Estado (2026-11-19): extracción en curso, NO corte de producción.**
+Los fuentes, tests y recursos del proveedor whatsapp-rust actualmente usado por
+Base-Matter ya se copiaron a providers/whatsapp-rust/. Base-Matter conserva
+su proveedor original y no se modificaron sus sesiones ni el pairing code.
 
-Estado: idea documentada, no desplegada. El núcleo y WhatsApp Rust siguen su propio ciclo de pruebas.
+## Directorios
+
+    providers/whatsapp-rust/       Proveedor Rust real (biblioteca whatsapp-rust 0.7.0)
+    providers/baileys/             Adaptador Rust, NO transporte de Baileys portado
+    providers/whatsmeow/           Adaptador Rust, NO transporte whatsmeow portado
+    crates/whatsapp-contracts/     Protocolo Rust versionado de solo lectura
+    bindings/javascript/          Cliente JS y pruebas
+    bindings/typescript/          Cliente TypeScript
+    bindings/go/                  Cliente Go y pruebas
+    templates/                    Plantillas del proveedor nativo
+
+Todas las familias tendrán una interfaz Rust común. Baileys se origina en
+TypeScript/JavaScript y whatsmeow en Go. Sus directorios actuales son de
+normalización Rust; aún NO contienen implementaciones funcionales del
+protocolo WhatsApp. No se ha importado código de terceros ni se afirma
+una conversión completa. Cualquier port exige revisión de licencia y tests.
+
+## Contrato de interoperabilidad
+
+El binario Rust matter_whatsapp_bridge procesa JSON por líneas desde stdin.
+Únicamente acepta la operación describe; NO envía mensajes, no conecta
+cuentas, no consulta secretos y no autoriza comandos. Go, JS y TS tienen
+bindings para este contrato; el servicio de mensajería autenticado es futuro.
+
+Pruebas offline desde la raíz:
+
+    cargo fmt --all -- --check
+    cargo test -p matter-whatsapp-contracts -p matter-whatsapp-baileys-adapter -p matter-whatsapp-whatsmeow-adapter --all-targets
+    cargo test -p whatsapp-matter-rust-provider --all-targets
+    node --test bindings/javascript/index.test.mjs
+    node bindings/javascript/describe.mjs whatsapp-rust
+
+Para Go, desde bindings/go:
+
+    go test ./...
+
+No ejecutar dos proveedores con el MISMO almacén de sesión ni copiar SQLite,
+keys o tokens al repositorio. El traslado del proceso de Base solo podrá
+realizarse tras CI, autenticación del puente y pairing de sesión de prueba
+aislada. Vault-Matter sigue siendo autoridad de permisos; Bot-Matter permanece
+bloqueado hasta cumplir los requisitos de Base-Matter.
+
+Documentos: docs/PROVIDER_MIGRATION.md y docs/WIRE_PROTOCOL.md.
 
 Créditos:
 Hecho por Lournyx Matterssmith [Lou-Nyx].

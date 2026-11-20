@@ -1,3 +1,12 @@
+## 2026-11-19 — Migración inicial Rust y contratos Go/TypeScript/JavaScript
+
+- Copia completa de proveedor Rust desde Base-Matter alpha (fuentes, tests, plantillas y audio); Base sigue ejecutando su proveedor original.
+- Workspace Rust con compatibilidad Baileys/whatsmeow de normalización únicamente. NO transportes portados ni sesiones nuevas.
+- Contratos y bindings JSON v1 describe solo lectura para Rust, Go, TS y JS, con pruebas automáticas y reglas de CI.
+- Guiar la continuación mediante docs/PROVIDER_MIGRATION.md y docs/WIRE_PROTOCOL.md. No hay Vault operativo ni capacidad de mutación externa.
+- CI y pairing reales pendientes al escribir este commit. Mantener Bot-Matter bloqueado; README revisado.
+- Créditos: Hecho por Lournyx Matterssmith [Lou-Nyx].
+
 ## 2026-11-19 — Enlace corregido
 
 - SHA anterior: 8dd6044ec27630d6d60de7747dbda99a45788db8.
